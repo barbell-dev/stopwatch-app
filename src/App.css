@@ -1,0 +1,38 @@
+.app-container {
+  border-style: solid;
+  border-color: black;
+  padding: 50px;
+  background-color: bisque;
+  /* display: flex; */
+}
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  /* color: ; */
+  /* width: 10%; */
+}
+.buttons button {
+  width: 40%;
+  background-color: cadetblue;
+  font-family: "Courier New", Courier, monospace;
+  color: aliceblue;
+  font-weight: bolder;
+}
+.final {
+  /* border-style: solid; */
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  justify-content: space-between;
+  align-items: center;
+  /* top: -1000px; */
+  margin-top: -80px;
+  /* padding: 250px; */
+}
+
+.header {
+  font-weight: bolder;
+  font-size: x-large;
+  font-family: "Courier New", Courier, monospace;
+}
