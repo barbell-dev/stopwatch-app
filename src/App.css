@@ -3,6 +3,9 @@
   border-color: black;
   padding: 50px;
   background-color: bisque;
+  border-radius: 50%;
+  width: 130px;
+  height: 130px;
   /* display: flex; */
 }
 .buttons {
@@ -37,6 +40,6 @@
   font-family: "Courier New", Courier, monospace;
 }
 .input {
-  width: 40px;
+  width: 30px;
   margin-right: 5px;
 }

@@ -2,13 +2,16 @@ import { useState, useEffect } from "react";
 import useSound from "use-sound";
 import "./App.css";
 import "./index.css";
+import sound from "./assets/jump.mp3";
+import timeup from "./assets/error.wav";
 export default function App() {
   // const ref = useRef(localStorage.getItem("seconds"));
 
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [isEditing, setIsEditing] = useState(true);
-  const [play] = useSound("./assets/jump.ogg");
+  const [play] = useSound(sound);
+  const [timeUp] = useSound(timeup);
   function startTimer() {
     let hrs = parseInt(document.body.querySelectorAll(".input")[0].value);
     let min = parseInt(document.body.querySelectorAll(".input")[1].value);
@@ -16,7 +19,9 @@ export default function App() {
     let sec = parseInt(document.body.querySelectorAll(".input")[2].value);
     let newSeconds = hrs * 3600 + min * 60 + sec;
     if (newSeconds == 0) {
+      play();
       alert("Set the timer first .");
+
       return;
     }
     setIsRunning((value) => true);
@@ -77,9 +82,10 @@ export default function App() {
           } else {
             setIsRunning((value) => false);
             // clearInterval(runner)
-            alert("Time up !!");
-            play();
+
             setIsEditing((value) => true);
+            timeUp();
+            alert("Time up !!");
             return;
           }
         }, 1000);
