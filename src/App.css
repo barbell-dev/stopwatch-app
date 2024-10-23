@@ -36,3 +36,7 @@
   font-size: x-large;
   font-family: "Courier New", Courier, monospace;
 }
+.input {
+  width: 40px;
+  margin-right: 5px;
+}

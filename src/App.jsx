@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import useSound from "use-sound";
 import "./App.css";
 import "./index.css";
 export default function App() {
@@ -7,7 +8,17 @@ export default function App() {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [isEditing, setIsEditing] = useState(true);
+  const [play] = useSound("./assets/jump.ogg");
   function startTimer() {
+    let hrs = parseInt(document.body.querySelectorAll(".input")[0].value);
+    let min = parseInt(document.body.querySelectorAll(".input")[1].value);
+    // console.log(document.body.querySelectorAll(".input")[2].value);
+    let sec = parseInt(document.body.querySelectorAll(".input")[2].value);
+    let newSeconds = hrs * 3600 + min * 60 + sec;
+    if (newSeconds == 0) {
+      alert("Set the timer first .");
+      return;
+    }
     setIsRunning((value) => true);
     setIsEditing((value) => false);
     // setInter
@@ -43,10 +54,11 @@ export default function App() {
   function handleChange() {
     let hrs = parseInt(document.body.querySelectorAll(".input")[0].value);
     let min = parseInt(document.body.querySelectorAll(".input")[1].value);
-    console.log(document.body.querySelectorAll(".input")[2].value);
+    // console.log(document.body.querySelectorAll(".input")[2].value);
     let sec = parseInt(document.body.querySelectorAll(".input")[2].value);
     let newSeconds = hrs * 3600 + min * 60 + sec;
     setSeconds((seconds) => newSeconds);
+    console.log(newSeconds);
   }
   useEffect(
     function () {
@@ -56,12 +68,23 @@ export default function App() {
         runner = setInterval(function () {
           let hrs = parseInt(document.body.querySelectorAll(".input")[0].value);
           let min = parseInt(document.body.querySelectorAll(".input")[1].value);
-          console.log(document.body.querySelectorAll(".input")[2].value);
+          // console.log(document.body.querySelectorAll(".input")[2].value);
           let sec = parseInt(document.body.querySelectorAll(".input")[2].value);
           let newSeconds = hrs * 3600 + min * 60 + sec;
-          setSeconds((seconds) => newSeconds + 1);
-          console.log("running");
+          if (newSeconds > 0) {
+            setSeconds((seconds) => newSeconds - 1);
+            console.log("running");
+          } else {
+            setIsRunning((value) => false);
+            // clearInterval(runner)
+            alert("Time up !!");
+            play();
+            setIsEditing((value) => true);
+            return;
+          }
         }, 1000);
+      } else {
+        return;
       }
       return () => {
         // console.log("here");
@@ -80,33 +103,43 @@ export default function App() {
         {/* {Math.floor(seconds / 3600) ? Math.floor(seconds / 3600) : seconds} :{" "} */}
         <div>
           <input
-            type="text"
+            type="number"
+            size={"2"}
+            min={0}
             defaultValue={
-              Math.floor(seconds / 3600) ? Math.floor(seconds / 3600) : "00"
+              Math.floor(seconds / 3600) ? Math.floor(seconds / 3600) : 0
             }
             onChange={handleChange}
             className="input"
-            size={"2"}
+            // size={"2"}
             disabled={isEditing ? "" : "disabled"}
           />
           {/* {Math.floor(seconds / 60) ? Math.floor(seconds / 60) : seconds} :{" "} */}
           <input
-            type="text"
+            type="number"
+            size={"2"}
+            min={0}
             defaultValue={
-              Math.floor(seconds / 60) ? Math.floor(seconds / 60) : "00"
+              // 0
+              Math.floor(seconds / 60) ? Math.floor((seconds % 3600) / 60) : 0
             }
             className="input"
             onChange={handleChange}
-            size={"2"}
+            // size={"2"}
             disabled={isEditing ? "" : "disabled"}
           />
           {/* {seconds ? seconds % 60 : seconds} */}
           <input
-            type="text"
-            defaultValue={seconds % 60 ? Math.floor(seconds % 60) : "00"}
+            type="number"
+            size={"2"}
+            min={0}
+            defaultValue={
+              seconds % 60 ? Math.floor(seconds % 60) : 0
+              // 0
+            }
             className="input"
             onChange={handleChange}
-            size={"2"}
+            // size={"2"}
             disabled={isEditing ? "" : "disabled"}
           />
         </div>
