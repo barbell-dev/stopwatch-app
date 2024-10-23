@@ -22,12 +22,44 @@ export default function App() {
     setIsEditing((value) => true);
     // clearInterval
   }
+  // useEffect(
+  //   function () {
+  //     //multiply hours*3600 ,  minutes*60 and add em to seconds inorder to find latest value of seconds after editing.
+  //     if (isEditing) {
+  //       let hrs = document.querySelectorAll("input")[0].value;
+  //       let min = document.querySelectorAll("input")[1].value;
+
+  //       let sec = document.querySelectorAll("input")[2].value;
+  //       let newSeconds = hrs * 3600 + min * 60 + sec;
+  //       setSeconds(newSeconds);
+  //       console.log(hrs + min + sec);
+  //     } else {
+  //       return;
+  //     }
+  //     return;
+  //   },
+  //   [isEditing]
+  // );
+  function handleChange() {
+    let hrs = parseInt(document.body.querySelectorAll(".input")[0].value);
+    let min = parseInt(document.body.querySelectorAll(".input")[1].value);
+    console.log(document.body.querySelectorAll(".input")[2].value);
+    let sec = parseInt(document.body.querySelectorAll(".input")[2].value);
+    let newSeconds = hrs * 3600 + min * 60 + sec;
+    setSeconds((seconds) => newSeconds);
+  }
   useEffect(
     function () {
       let runner;
       if (isRunning) {
+        // setSeconds(newSeconds);
         runner = setInterval(function () {
-          setSeconds((seconds) => seconds + 1);
+          let hrs = parseInt(document.body.querySelectorAll(".input")[0].value);
+          let min = parseInt(document.body.querySelectorAll(".input")[1].value);
+          console.log(document.body.querySelectorAll(".input")[2].value);
+          let sec = parseInt(document.body.querySelectorAll(".input")[2].value);
+          let newSeconds = hrs * 3600 + min * 60 + sec;
+          setSeconds((seconds) => newSeconds + 1);
           console.log("running");
         }, 1000);
       }
@@ -52,6 +84,7 @@ export default function App() {
             defaultValue={
               Math.floor(seconds / 3600) ? Math.floor(seconds / 3600) : "00"
             }
+            onChange={handleChange}
             className="input"
             size={"2"}
             disabled={isEditing ? "" : "disabled"}
@@ -63,6 +96,7 @@ export default function App() {
               Math.floor(seconds / 60) ? Math.floor(seconds / 60) : "00"
             }
             className="input"
+            onChange={handleChange}
             size={"2"}
             disabled={isEditing ? "" : "disabled"}
           />
@@ -71,6 +105,7 @@ export default function App() {
             type="text"
             defaultValue={seconds % 60 ? Math.floor(seconds % 60) : "00"}
             className="input"
+            onChange={handleChange}
             size={"2"}
             disabled={isEditing ? "" : "disabled"}
           />
