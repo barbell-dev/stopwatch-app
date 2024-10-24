@@ -119,22 +119,34 @@ export default function App() {
         {/* {Math.floor(seconds / 3600) ? Math.floor(seconds / 3600) : seconds} :{" "} */}
         <div>
           <input
-            type="number"
-            size={"2"}
+            type="text"
+            size={2}
+            max={99}
             min={0}
+            maxLength={2}
             defaultValue={
               Math.floor(seconds / 3600) ? Math.floor(seconds / 3600) : 0
             }
-            onChange={handleChange}
+            // onChangeCapture={handleChange}
+            // onInput={handleChange}
+            // onCompositionUpdate={handleChange}
+            // onAbort={handleChange}
+            // onBeforeInput={handleChange}
+            // onEnded={handleChange}
+            // onFocus={handleChange}
+            // onInput={handleChange}
+            // onProgress={handleChange}
+            onBlur={handleChange}
             className="input"
             // size={"2"}
             disabled={isEditing ? "" : "disabled"}
           />
           {/* {Math.floor(seconds / 60) ? Math.floor(seconds / 60) : seconds} :{" "} */}
           <input
-            type="number"
+            type="text"
             size={"2"}
             min={0}
+            maxLength={2}
             defaultValue={
               // 0
               Math.floor(seconds / 60) ? Math.floor((seconds % 3600) / 60) : 0
@@ -146,9 +158,10 @@ export default function App() {
           />
           {/* {seconds ? seconds % 60 : seconds} */}
           <input
-            type="number"
+            type="text"
             size={"2"}
             min={0}
+            maxLength={2}
             defaultValue={
               seconds % 60 ? Math.floor(seconds % 60) : 0
               // 0
