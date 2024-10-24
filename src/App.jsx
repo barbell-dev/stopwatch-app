@@ -93,6 +93,7 @@ export default function App() {
             // clearInterval(runner)
 
             setIsEditing((value) => true);
+            setStartingSeconds((value) => 0);
             timeUp();
             alert("Time up !!");
             return;
