@@ -192,6 +192,7 @@ export default function App() {
               : 0
           }
           counterClockwise={true}
+          strokeWidth={4}
           styles={buildStyles({
             pathColor: "gray",
             trailColor: "blue",
