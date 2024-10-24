@@ -191,10 +191,12 @@ export default function App() {
               ? ((startingSeconds - seconds) / startingSeconds) * 100
               : 0
           }
+          counterClockwise={true}
           styles={buildStyles({
-            pathColor: "blue",
-            trailColor: "gray",
+            pathColor: "gray",
+            trailColor: "blue",
             pathTransitionDuration: 0.15,
+            // rotation: 1,
           })}
         >
           {/* <div className="app-container"> */}
