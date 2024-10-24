@@ -4,12 +4,14 @@ import "./App.css";
 import "./index.css";
 import sound from "./assets/jump.mp3";
 import timeup from "./assets/error.wav";
+import { Circle } from "rc-progress";
 export default function App() {
   // const ref = useRef(localStorage.getItem("seconds"));
 
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [isEditing, setIsEditing] = useState(true);
+  const [startingSeconds, setStartingSeconds] = useState(0);
   const [play] = useSound(sound);
   const [timeUp] = useSound(timeup);
   function startTimer() {
@@ -36,6 +38,7 @@ export default function App() {
     setSeconds((seconds) => seconds - seconds);
     setIsRunning((value) => false);
     setIsEditing((value) => true);
+    setStartingSeconds((value) => 0);
     // clearInterval
   }
   // useEffect(
@@ -64,6 +67,7 @@ export default function App() {
     let newSeconds = hrs * 3600 + min * 60 + sec;
     setSeconds((seconds) => newSeconds);
     console.log(newSeconds);
+    setStartingSeconds((sec) => newSeconds);
   }
   useEffect(
     function () {
@@ -175,6 +179,17 @@ export default function App() {
     <div className="final">
       <header className="header">Stopwatch</header>
       <div className="app-container">
+        <Circle
+          percent={
+            startingSeconds
+              ? ((startingSeconds - seconds) / startingSeconds) * 100
+              : 0
+          }
+          strokeColor={"blue"}
+          trailColor="white"
+          strokeWidth={4}
+          trailWidth={4}
+        />
         <Timer />
       </div>
     </div>
