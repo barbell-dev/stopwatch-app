@@ -1,4 +1,4 @@
-.app-container {
+/* .app-container {
   border-style: solid;
   border-color: black;
   padding: 50px;
@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 .buttons {
   margin-top: 20px;
   display: flex;

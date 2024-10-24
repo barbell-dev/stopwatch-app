@@ -5,6 +5,11 @@ import "./index.css";
 import sound from "./assets/jump.mp3";
 import timeup from "./assets/error.wav";
 import { Circle } from "rc-progress";
+import {
+  buildStyles,
+  CircularProgressbar,
+  CircularProgressbarWithChildren,
+} from "react-circular-progressbar";
 export default function App() {
   // const ref = useRef(localStorage.getItem("seconds"));
 
@@ -178,20 +183,25 @@ export default function App() {
   return (
     <div className="final">
       <header className="header">Stopwatch</header>
-      <div className="app-container">
-        <Circle
-          percent={
+      <div style={{ width: 250, height: 250 }}>
+        <CircularProgressbarWithChildren
+          value={
             startingSeconds
               ? ((startingSeconds - seconds) / startingSeconds) * 100
               : 0
           }
-          strokeColor={"blue"}
-          trailColor="white"
-          strokeWidth={4}
-          trailWidth={4}
-        />
-        <Timer />
+          styles={buildStyles({
+            pathColor: "blue",
+            trailColor: "gray",
+            pathTransitionDuration: 0.15,
+          })}
+        >
+          {/* <div className="app-container"> */}
+          <Timer />
+          {/* </div> */}
+        </CircularProgressbarWithChildren>
       </div>
+      {/* </Circle> */}
     </div>
   );
 }
