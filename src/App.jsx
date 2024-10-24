@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useSound from "use-sound";
 import "./App.css";
 import "./index.css";
@@ -12,7 +12,9 @@ import {
 } from "react-circular-progressbar";
 export default function App() {
   // const ref = useRef(localStorage.getItem("seconds"));
-
+  const hoursRef = useRef(null);
+  const minutesRef = useRef(null);
+  const secondsRef = useRef(null);
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [isEditing, setIsEditing] = useState(true);
@@ -64,15 +66,18 @@ export default function App() {
   //   },
   //   [isEditing]
   // );
-  function handleChange() {
+  function handleChange(event) {
     let hrs = parseInt(document.body.querySelectorAll(".input")[0].value);
     let min = parseInt(document.body.querySelectorAll(".input")[1].value);
     // console.log(document.body.querySelectorAll(".input")[2].value);
+
     let sec = parseInt(document.body.querySelectorAll(".input")[2].value);
     let newSeconds = hrs * 3600 + min * 60 + sec;
     setSeconds((seconds) => newSeconds);
-    console.log(newSeconds);
+    // ?console.log(newSeconds);
     setStartingSeconds((sec) => newSeconds);
+
+    // console.log(event.target.tagName.toLowerCase());
   }
   useEffect(
     function () {
@@ -112,6 +117,28 @@ export default function App() {
     },
     [isRunning]
   );
+  function handleFocus(event, nextRef) {
+    // event.preventDefault();
+    // console.log(typeof event.target.value);
+    if (event.target.value.length === 2 && nextRef?.current) {
+      nextRef.current.focus();
+      // let id = parseInt(event.target.id);
+      // let nextInputElementToFocus = document.getElementById(id + 1);
+      // console.log(nextInputElementToFocus);
+      // // console.log(nextInputElementToFocus);
+      // // console.log(event.target.value);
+      // // if (nextInputElementToFocus != undefined) {
+      // //   // nextInputElementToFocus.focus();
+      // //   // nextInputElementToFocus.select();
+      // //   nextInputElementToFocus.focus();
+      // // }
+      // // console.log(nextInputElementToFocus.f;
+      // nextInputElementToFocus.focus();
+    } else {
+      console.log("here");
+      return;
+    }
+  }
   function Display({ seconds }) {
     // console.log(seconds);
     return (
@@ -121,13 +148,18 @@ export default function App() {
           <input
             type="text"
             size={2}
+            ref={hoursRef}
             max={99}
             min={0}
             maxLength={2}
             defaultValue={
               Math.floor(seconds / 3600) ? Math.floor(seconds / 3600) : 0
             }
-            // onChangeCapture={handleChange}
+            onChange={(event) => {
+              handleFocus(event, minutesRef);
+            }}
+            id="1"
+            // onBlurCapture={handleChange}
             // onInput={handleChange}
             // onCompositionUpdate={handleChange}
             // onAbort={handleChange}
@@ -151,9 +183,12 @@ export default function App() {
               // 0
               Math.floor(seconds / 60) ? Math.floor((seconds % 3600) / 60) : 0
             }
+            id="2"
             className="input"
-            onChange={handleChange}
+            onBlur={handleChange}
             // size={"2"}
+            onChange={(e) => handleFocus(e, secondsRef)}
+            ref={minutesRef}
             disabled={isEditing ? "" : "disabled"}
           />
           {/* {seconds ? seconds % 60 : seconds} */}
@@ -166,9 +201,12 @@ export default function App() {
               seconds % 60 ? Math.floor(seconds % 60) : 0
               // 0
             }
+            ref={secondsRef}
+            id="3"
             className="input"
-            onChange={handleChange}
+            onBlur={handleChange}
             // size={"2"}
+            onChange={(e) => handleFocus(e, null)}
             disabled={isEditing ? "" : "disabled"}
           />
         </div>
