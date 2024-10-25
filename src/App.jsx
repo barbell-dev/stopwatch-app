@@ -120,7 +120,7 @@ export default function App() {
   function handleFocus(event, nextRef) {
     // event.preventDefault();
     // console.log(typeof event.target.value);
-    if (event.target.value.length === 2 && nextRef?.current) {
+    if (event.target.value.length === 2 && nextRef.current) {
       nextRef.current.focus();
       // let id = parseInt(event.target.id);
       // let nextInputElementToFocus = document.getElementById(id + 1);
@@ -155,6 +155,7 @@ export default function App() {
             defaultValue={
               Math.floor(seconds / 3600) ? Math.floor(seconds / 3600) : 0
             }
+            // oncl
             onChange={(event) => {
               handleFocus(event, minutesRef);
             }}
