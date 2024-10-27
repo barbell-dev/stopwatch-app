@@ -43,6 +43,7 @@ export default function App() {
 
       return;
     }
+    setStartingSeconds((s) => newSeconds);
     setIsRunning((value) => true);
     setIsEditing((value) => false);
     // setInter
