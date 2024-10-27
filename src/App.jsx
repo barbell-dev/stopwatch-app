@@ -4,10 +4,8 @@ import "./App.css";
 import "./index.css";
 import sound from "./assets/jump.mp3";
 import timeup from "./assets/error.wav";
-import { Circle } from "rc-progress";
 import {
   buildStyles,
-  CircularProgressbar,
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
 export default function App() {
@@ -22,11 +20,23 @@ export default function App() {
   const [play] = useSound(sound);
   const [timeUp] = useSound(timeup);
   function startTimer() {
-    let hrs = parseInt(document.body.querySelectorAll(".input")[0].value);
-    let min = parseInt(document.body.querySelectorAll(".input")[1].value);
-    // console.log(document.body.querySelectorAll(".input")[2].value);
-    let sec = parseInt(document.body.querySelectorAll(".input")[2].value);
+    let hrs = parseInt(hoursRef.current.value);
+    // console.log(hrs);
+
+    let min = parseInt(minutesRef.current.value);
+    // // console.log(document.body.querySelectorAll(".input")[2].value);
+    let sec = parseInt(secondsRef.current.value);
     let newSeconds = hrs * 3600 + min * 60 + sec;
+    setSeconds((s) => newSeconds);
+    console.log(newSeconds);
+    // hoursRef.current.value = Math.floor(newSeconds / 3600);
+    // minutesRef.current.value = Math.floor((newSeconds % 3600) / 60);
+    // secondsRef.current.value = Math.floor(newSeconds % 60);
+    // console.log(
+    //   hoursRef.current.value,
+    //   minutesRef.current.value,
+    //   secondsRef.current.value
+    // );
     if (newSeconds == 0) {
       play();
       alert("Set the timer first .");
@@ -66,37 +76,73 @@ export default function App() {
   //   },
   //   [isEditing]
   // );
-  function handleChange(event) {
-    let hrs = parseInt(document.body.querySelectorAll(".input")[0].value);
-    let min = parseInt(document.body.querySelectorAll(".input")[1].value);
-    // console.log(document.body.querySelectorAll(".input")[2].value);
-
-    let sec = parseInt(document.body.querySelectorAll(".input")[2].value);
-    let newSeconds = hrs * 3600 + min * 60 + sec;
-    setSeconds((seconds) => newSeconds);
-    // ?console.log(newSeconds);
-    setStartingSeconds((sec) => newSeconds);
-
-    // console.log(event.target.tagName.toLowerCase());
-  }
+  // function handleChange(event) {
+  //   // console.log("handleChange");
+  //   // let hrs = parseInt(hoursRef.current.value);
+  //   // let min = parseInt(minutesRef.current.value);
+  //   // let sec = parseInt(secondsRef.current.value);
+  //   // // console.log(document.body.querySelectorAll(".input")[2].value);
+  //   // // console.log(
+  //   // //   secondsRef.currentocument.body.querySelectorAll(".input")[2].value
+  //   // // );
+  //   // let newSeconds = hrs * 3600 + min * 60 + sec;
+  //   // // setSeconds((seconds) => newSeconds);
+  //   // // // ?console.log(newSeconds);
+  //   // // setStartingSeconds((sec) => newSeconds);
+  //   // console.log(event.target.tagName.toLowerCase());
+  // }
+  // console.log("here");
+  // let runner;
+  // useEffect(() => {
+  //   if (seconds <= 0) {
+  //     clearInterval(runner);
+  //     console.log("new")
+  //   }
+  //   return () => {};
+  // }, [seconds]);
   useEffect(
     function () {
+      // console.log(isRunning);
+      // if (seconds > 0) {
+      //   clearInterval(runner);
+      // }
       let runner;
       if (isRunning) {
         // setSeconds(newSeconds);
+        console.log("in isRunning ");
+        // console.log(hoursRef.current.value);
+        // let hrs = Math.floor(seconds / 3600);
+        // let min = Math.floor((seconds % 3600) / 60);
+        // let sec = seconds % 60;
+        // // // console.log(document.body.querySelectorAll(".input")[2].value);
+        // // let sec = parseInt(secondsRef.current.value)
+        // console.log(hrs, min, sec);
+        // let newSeconds = hrs * 3600 + min * 60 + sec;
         runner = setInterval(function () {
-          let hrs = parseInt(document.body.querySelectorAll(".input")[0].value);
-          let min = parseInt(document.body.querySelectorAll(".input")[1].value);
-          // console.log(document.body.querySelectorAll(".input")[2].value);
-          let sec = parseInt(document.body.querySelectorAll(".input")[2].value);
+          // console.log(hoursRef.current);
+          /*can also use
+runner= setInterval(function(){
+          setSeconds((s)=>{if(s>0){return s-1}else{clearInterval(runner);timeUp();alert("Time up");return 0;}})
+ },1000)*/
+          let hrs = parseInt(hoursRef.current.value);
+          let min = parseInt(minutesRef.current.value);
+          let sec = parseInt(secondsRef.current.value);
+          // // // console.log(document.body.querySelectorAll(".input")[2].value);
+          // // let sec = parseInt(secondsRef.current.value)
+          // console.log(hrs, min, sec);
           let newSeconds = hrs * 3600 + min * 60 + sec;
+          // console.log(newSeconds);
+
+          // console.log(seconds + "lerer");
           if (newSeconds > 0) {
             setSeconds((seconds) => newSeconds - 1);
             console.log("running");
+            // console.log(seconds);
+            return;
           } else {
             setIsRunning((value) => false);
             // clearInterval(runner)
-
+            console.log("lol");
             setIsEditing((value) => true);
             setStartingSeconds((value) => 0);
             timeUp();
@@ -105,13 +151,10 @@ export default function App() {
           }
         }, 1000);
       } else {
-        return;
+        // return;
       }
       return () => {
-        // console.log("here");
-        if (runner == undefined) {
-          return;
-        }
+        console.log("hereee e");
         clearInterval(runner);
       };
     },
@@ -120,7 +163,9 @@ export default function App() {
   function handleFocus(event, nextRef) {
     // event.preventDefault();
     // console.log(typeof event.target.value);
-    if (event.target.value.length === 2 && nextRef.current) {
+    if (nextRef == null) {
+    } else if (event.target.value.length == 2 && nextRef.current) {
+      console.log(nextRef.current);
       nextRef.current.focus();
       // let id = parseInt(event.target.id);
       // let nextInputElementToFocus = document.getElementById(id + 1);
@@ -136,7 +181,7 @@ export default function App() {
       // nextInputElementToFocus.focus();
     } else {
       console.log("here");
-      return;
+      // return;
     }
   }
   function Display({ seconds }) {
@@ -153,7 +198,9 @@ export default function App() {
             min={0}
             maxLength={2}
             defaultValue={
-              Math.floor(seconds / 3600) ? Math.floor(seconds / 3600) : 0
+              Math.floor(seconds / 3600) < 10
+                ? "0" + Math.floor(seconds / 3600)
+                : Math.floor(seconds / 3600)
             }
             // oncl
             onChange={(event) => {
@@ -169,7 +216,7 @@ export default function App() {
             // onFocus={handleChange}
             // onInput={handleChange}
             // onProgress={handleChange}
-            onBlur={handleChange}
+            // onBlur={handleChange}
             className="input"
             // size={"2"}
             disabled={isEditing ? "" : "disabled"}
@@ -182,11 +229,13 @@ export default function App() {
             maxLength={2}
             defaultValue={
               // 0
-              Math.floor(seconds / 60) ? Math.floor((seconds % 3600) / 60) : 0
+              Math.floor((seconds % 3600) / 60) < 10
+                ? "0" + Math.floor((seconds % 3600) / 60)
+                : Math.floor((seconds % 3600) / 60)
             }
             id="2"
             className="input"
-            onBlur={handleChange}
+            // onBlur={handleChange}
             // size={"2"}
             onChange={(e) => handleFocus(e, secondsRef)}
             ref={minutesRef}
@@ -199,13 +248,13 @@ export default function App() {
             min={0}
             maxLength={2}
             defaultValue={
-              seconds % 60 ? Math.floor(seconds % 60) : 0
+              seconds % 60 < 10 ? "0" + (seconds % 60) : seconds % 60
               // 0
             }
             ref={secondsRef}
             id="3"
             className="input"
-            onBlur={handleChange}
+            // onBlur={handleChange}
             // size={"2"}
             onChange={(e) => handleFocus(e, null)}
             disabled={isEditing ? "" : "disabled"}
